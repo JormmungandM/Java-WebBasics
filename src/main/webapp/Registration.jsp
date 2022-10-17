@@ -57,7 +57,7 @@
             <a class="waves-effect waves-light btn" >Create account</a>
           </div>
           <div style="text-align: right; display: inline">
-            <a class="waves-effect waves-light btn" href="index.jsp">Cancel</a>
+            <a class="waves-effect waves-light btn" href="WEB-INF/index.jsp">Cancel</a>
           </div>
         </div>
 

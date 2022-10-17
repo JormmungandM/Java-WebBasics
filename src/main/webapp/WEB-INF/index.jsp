@@ -28,8 +28,11 @@
 
 <body>
 <h2>JSP - Java Server Pages</h2>
+<a href="filters">Веб-фильтры</a>
 
-<img src="<%=home%>/img/maxresdefault.jpg" style="width: 600px; height: 400px"/>
+<br/>
+<br/>
+<%--<img src="<%=home%>/img/maxresdefault.jpg" style="width: 600px; height: 400px"/>--%>
 
 <p>
     Суть JSP - "смешивание" возможностей Java и HTML.
@@ -40,7 +43,7 @@
 </p>
 
 
-<jsp:include page="WEB-INF/fragment.jsp"/>
+<jsp:include page="fragment.jsp"/>
 <br/>
 
 Условная верстка
@@ -67,7 +70,8 @@
     <% } %>
 </form>
 
-<jsp:include page="WEB-INF/footer.jsp"/>
+<br/>
+<jsp:include page="footer.jsp"/>
 
 </body>
 </html>
