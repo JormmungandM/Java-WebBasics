@@ -46,5 +46,17 @@
       Ранее было введено <b><%= userInput %></b>
       <% } %>
     </p>
+
+    <p>
+      URL:                   img/glassfish.jpg                    /
+      getRequestURI()   /WebBasics/img/glassfish.jpg         /WebBasics/
+      getContextPath()  /WebBasics                           /WebBasics
+      getServletPath()  /img/glassfish.jpg                   /
+    </p>
+    <p>
+      Задание: создать фильтр (самый первый), который установит кодировки UTF-8
+      Задание: в начале работы приложения проверить возможность подключения к БД
+      если подключения нет, все запросы переводить на /static
+    </p>
   </body>
 </html>

@@ -15,7 +15,7 @@ public class MysqlDataService implements DataService{
         if( connection == null){
             try{
                 Class.forName("com.mysql.cj.jdbc.Driver");
-                connection = DriverManager.getConnection(connectionString,dbUser,dbPass);
+                connection = DriverManager.getConnection( connectionString, dbUser ,dbPass );
             }catch (Exception ex){
                 System.out.println( "MysqlDataService::getConnection() -- " + ex.getMessage());
             }

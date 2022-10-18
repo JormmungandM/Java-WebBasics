@@ -1,10 +1,13 @@
 package step.learning.filters;
 
+import com.google.inject.Singleton;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 
-@WebFilter( "/*" )
+//@WebFilter( "/*" )
+@Singleton
 public class DemoFilter implements Filter {
 
     private FilterConfig filterConfig;
@@ -21,10 +24,10 @@ public class DemoFilter implements Filter {
             FilterChain filterChain)
             throws IOException, ServletException {
 
-        System.out.println( "Filter starts" );
+        //System.out.println( "Filter starts" );
         servletRequest.setAttribute("DemoFilter","Filter!!!");
         filterChain.doFilter( servletRequest,servletResponse );
-        System.out.println( "Filter ends" );
+        //System.out.println( "Filter ends" );
 
     }
 

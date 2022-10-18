@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8"%><%
     String fromDemoFilter = (String) request.getAttribute( "DemoFilter" );
     //System.out.println( "JSP" );
+    //List<String> users = (List<String>) request.getAttribute("users");
+    String[] users = (String[]) request.getAttribute("users");
 %>
 <html>
 <head>
@@ -38,5 +40,13 @@
     <i>DemoFilter передал данные <b><%=fromDemoFilter%></b></i>
     <% } %>
 </p>
+<p>
+    Инфомация от БД: <%= request.getAttribute("viewInfo") %>
+</p>
+
+<% for(String user:users) {%>
+<span><%=user%></span><br/>
+<%}%>
+
 </body>
 </html>
