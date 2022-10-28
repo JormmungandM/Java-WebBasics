@@ -2,43 +2,39 @@
 <%
 //    String[] langs = new String[] { "uk", "en", "ru", "java" } ;
 
-    String home = "/Java_WebBasics_war_exploded" ;
+    String home = request.getContextPath() ;
     String count = (String) request.getAttribute("count");
     String[] elements = (String[]) request.getAttribute("elements");
+    String MD5 = (String) request.getAttribute("HashInputMD5");
+    String Sha1 = (String) request.getAttribute("HashInputSha1");
 %>
 <!doctype html >
 
 <html>
-
 <head>
     <meta charset="UTF-8" />
     <title>JSP basics</title>
-    <style>
-        input[type=radio] {
-            visibility: hidden;
-        }
-        input[type=radio]:checked + label {
-            border: 1px solid salmon;
-            font-weight: bold;
-        }
-        label {
-            cursor: pointer;
-            font-size: larger;
-            font-variant: all-petite-caps;
-        }
-    </style>
+    <link rel="stylesheet" href="<%=home%>/css/style.css">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </head>
 
 <body>
+
+<jsp:include page="/WEB-INF/headerfragment.jsp"/>
+
 <h2>JSP - Java Server Pages</h2>
 <div>
     <h4>Navigation</h4>
-    <a href="filters">Веб-фильтры</a>
+    <a href="<%=home%>/filters">Веб-фильтры</a>
     <br/>
-    <a href="../guice.jsp">Инверсия управления</a>
+    <a href="<%=home%>/guice.jsp">Инверсия управления</a>
     <br/>
-    <jsp:include page="footer.jsp"/>
 </div>
+
 <%--<img src="<%=home%>/img/maxresdefault.jpg" style="width: 600px; height: 400px"/>--%>
 <!--
 <p>
@@ -81,11 +77,33 @@
 <div>
     <h4>DB Table</h4>
     DB:  <%= count %><br/><br/>
-    <% for(String element:elements) {%>
-    <span><%=element%></span><br/>
-    <%}%>
+    <%-- <% for(String element:elements) {%>
+        <span><%=element%></span><br/>
+        <%}%> --%>
 </div>
+<form method="post" action="" style="width: 30%; text-align: left">
+    <div class="row" >
+        <div class="input-field col s12">
+            <input name="HashInput" id="Hash" type="text" class="validate" >
+            <label for="Hash">Hash</label>
+        </div>
+        <button class="waves-effect waves-light btn" >Hash</button>
+    </div>
+</form>
 
+<%if(MD5 != null || Sha1 !=null){%>
+<div>
+    <p>
+        Hash MD5: <%=MD5%>
+    </p>
+    <p>
+        Hash Sha1: <%=Sha1%>
+    </p>
+</div>
+<%}%>
+<div style="text-align: center">
+    <jsp:include page="footer.jsp"/>
+</div>
 
 </body>
 </html>

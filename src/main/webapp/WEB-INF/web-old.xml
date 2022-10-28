@@ -34,7 +34,7 @@
 
 <!--  <servlet>-->
 <!--    <servlet-name>ViewServlet</servlet-name>-->
-<!--    <servlet-class>step.learning.ViewServlet</servlet-class>-->
+<!--    <servlet-class>step.learning.servlets.ViewServlet</servlet-class>-->
 <!--  </servlet>-->
 <!--  <servlet-mapping>-->
 <!--    <servlet-name>ViewServlet</servlet-name>-->

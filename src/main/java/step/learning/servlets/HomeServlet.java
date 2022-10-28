@@ -1,7 +1,9 @@
-package step.learning;
+package step.learning.servlets;
 
 import com.google.inject.Singleton;
 import step.learning.services.DataService;
+import step.learning.services.hash.MD5HashService;
+import step.learning.services.hash.Sha1HashService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,11 +16,23 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 
 //@WebServlet("/")
 @Singleton
 public class HomeServlet extends HttpServlet
 {
+    MD5HashService MD5 = new MD5HashService();
+    Sha1HashService Sha1 = new Sha1HashService();
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String HashInput = req.getParameter( "HashInput" ) ;
+        req.setAttribute("HashInputMD5", MD5.hash(HashInput));
+        req.setAttribute("HashInputSha1", Sha1.hash(HashInput));
+        req.getRequestDispatcher("WEB-INF/index.jsp").forward(req,resp);
+    }
+
     @Override
     protected void doGet(HttpServletRequest req,HttpServletResponse resp ) throws ServletException, IOException {
 
@@ -40,7 +54,6 @@ public class HomeServlet extends HttpServlet
         }
 
 
-
         List<String> elements = new ArrayList<>();
         try (Statement stat = dataService.getConnection().createStatement();
              ResultSet res = stat.executeQuery("SELECT * FROM randoms2");)
@@ -58,11 +71,12 @@ public class HomeServlet extends HttpServlet
             dbElement = "Error " + ex.getMessage();
         }
 
-
         req.setAttribute("count", dbElement);
         req.setAttribute("elements", elements.toArray(new String[0]));
         req.getRequestDispatcher("WEB-INF/index.jsp").forward(req,resp);
     }
+
+
 
 
 }
