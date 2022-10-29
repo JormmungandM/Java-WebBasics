@@ -13,17 +13,17 @@
     <!-- Compiled and minified JavaScript -->
    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
-   <title>Registration</title>
+   <title>JSP</title>
 </head>
 <body>
 
-<div style="margin-top: 8%">
+<div style="margin-top: 6%">
     <jsp:include page="<%=pageBody%>" />
 </div>
 
 
 <div style="text-align: center; ">
-    <jsp:include page="footer.jsp"/>
+    <jsp:include page="footer/footer.jsp"/>
 </div>
 
 </body>

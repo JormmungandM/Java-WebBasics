@@ -43,10 +43,10 @@ label {
     text-decoration: none;
 }
 .reg-error {
-    color: crimson;
+    color: crimson; !important;
 }
 .reg-ok {
-    color: forestgreen;
+    color: forestgreen; !important;
 }
 .profile-avatar {
     float: left;

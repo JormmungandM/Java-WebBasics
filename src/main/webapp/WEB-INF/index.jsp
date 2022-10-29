@@ -15,18 +15,17 @@
     <meta charset="UTF-8" />
     <title>JSP basics</title>
     <link rel="stylesheet" href="<%=home%>/css/style.css">
+
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </head>
 
 <body>
 
-<jsp:include page="/WEB-INF/headerfragment.jsp"/>
+<jsp:include page="/WEB-INF/head/headerfragment.jsp"/>
 
-<h2>JSP - Java Server Pages</h2>
 <div>
     <h4>Navigation</h4>
     <a href="<%=home%>/filters">Веб-фильтры</a>
@@ -102,7 +101,7 @@
 </div>
 <%}%>
 <div style="text-align: center">
-    <jsp:include page="footer.jsp"/>
+    <jsp:include page="footer/footer.jsp"/>
 </div>
 
 </body>

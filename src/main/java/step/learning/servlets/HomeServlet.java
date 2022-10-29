@@ -28,6 +28,7 @@ public class HomeServlet extends HttpServlet
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String HashInput = req.getParameter( "HashInput" ) ;
+        System.out.println(req.getParameter( "HashInput" ));
         req.setAttribute("HashInputMD5", MD5.hash(HashInput));
         req.setAttribute("HashInputSha1", Sha1.hash(HashInput));
         req.getRequestDispatcher("WEB-INF/index.jsp").forward(req,resp);

@@ -40,8 +40,8 @@ public class AuthFilter  implements Filter {
         // затем log in
         if( request.getMethod().equalsIgnoreCase( "POST" ) ) {
             if( "auth-form".equals( request.getParameter( "form-id" ) ) ) {
-                String userLogin    = request.getParameter( "userLogin" ) ;
-                String userPassword = request.getParameter( "userPassword" ) ;
+                String userLogin    = request.getParameter( "Login" ) ;
+                String userPassword = request.getParameter( "Password" ) ;
                 User user = userDAO.getUserByCredentials( userLogin, userPassword ) ;
                 if( user == null ) {
                     session.setAttribute( "AuthError", "Credentials incorrect" ) ;
@@ -49,7 +49,7 @@ public class AuthFilter  implements Filter {
                 else {
                     session.setAttribute( "AuthUserId", user.getId() ) ;
                 }
-                System.out.println( userLogin + "  " + userPassword + " " +
+                System.out.println( userLogin + " " + userPassword + " " +
                         ( user == null ? "null" : user.getId() ) ) ;
                 response.sendRedirect( request.getRequestURI() ) ;
                 return ;

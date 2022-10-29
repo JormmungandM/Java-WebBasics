@@ -37,9 +37,8 @@ public class RegistrationServlet extends HttpServlet {
         }
 
 
-        req.setAttribute( "pageBody", "reg_user.jsp" ) ;
-        req.getRequestDispatcher( "/WEB-INF/_layout.jsp" )
-                .forward( req, resp ) ;
+        req.setAttribute( "pageBody", "auth/registration.jsp" ) ;
+        req.getRequestDispatcher( "/WEB-INF/_layout.jsp" ).forward( req, resp ) ;
     }
 
     @Override
@@ -47,16 +46,17 @@ public class RegistrationServlet extends HttpServlet {
         HttpSession session = req.getSession() ;
 
         // Прием данных от формы регистрации
-        String userLogin = req.getParameter( "userLogin" ) ;
-        String userPassword = req.getParameter( "userPassword" ) ;
+        String userLogin = req.getParameter( "Login" ) ;
+        String userPassword = req.getParameter( "Password" ) ;
         String confirmPassword = req.getParameter( "confirmPassword" ) ;
-        String userName = req.getParameter( "userName" ) ;
-        Part userAvatar = req.getPart( "userAvatar" ) ;  // часть, отвечающая за файл (имя - как у input)
+        String userName = req.getParameter( "Name" ) ;
+        Part userAvatar = req.getPart( "Avatar" ) ;  // часть, отвечающая за файл (имя - как у input)
 
         // Валидация данных
         String errorMessage = null ;
         try {
             if( userLogin == null || userLogin.isEmpty() ) {
+                System.out.println(req.getParameter( "userLogin" ));
                 throw new Exception( "Login could not be empty" ) ;
             }
             if( ! userLogin.equals( userLogin.trim() ) ) {
@@ -82,6 +82,7 @@ public class RegistrationServlet extends HttpServlet {
             if( userAvatar == null ) {  // такое возможно если на форме нет <input type="file" name="userAvatar"
                 throw new Exception( "Form integrity violation" ) ;
             }
+
             long size = userAvatar.getSize() ;
             String savedName = null ;
             if( size > 0 ) {  // если на форме есть input, то узнать приложен ли файл можно по его размеру
@@ -127,7 +128,6 @@ public class RegistrationServlet extends HttpServlet {
         resp.sendRedirect( req.getRequestURI() ) ;
     }
 
-
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User changes = new User() ;
@@ -136,10 +136,7 @@ public class RegistrationServlet extends HttpServlet {
         try {
             userAvatar = req.getPart( "userAvatar" ) ;
         } catch( Exception ignored ) { }
-/*
-Д.З. Реализовать загрузку файла-аватарки, заменить у пользователя данные
-! не забыть удалить старый файл
- */
+
         if( userAvatar != null ) {
             resp.getWriter().print( "File '" + userAvatar.getSubmittedFileName() + "' in use" ) ;
             return ;
