@@ -17,7 +17,7 @@ public class ConfigServlet extends ServletModule {
         // ...  и сервлетов
         serve( "/filters" ).with( FiltersServlet.class );
         serve( "/servlet" ).with( ViewServlet.class );
-        serve( "/register" ).with( RegistrationServlet.class );
+        serve( "/register/" ).with( RegistrationServlet.class );
         serve( "/image/*" ).with( DownloadServlet.class ) ;
         serve( "/profile" ).with( ProfileServlet.class ) ;
         serve( "/" ).with( HomeServlet.class );

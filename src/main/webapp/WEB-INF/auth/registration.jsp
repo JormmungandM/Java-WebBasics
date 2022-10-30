@@ -3,28 +3,37 @@
   String home = request.getContextPath() ;
   String regError = (String) request.getAttribute( "regError" ) ;
   String regOk = (String) request.getAttribute( "regOk" ) ;
+  String SaveName = (String) request.getAttribute( "SaveName" );
+  String SaveLog = (String)  request.getAttribute( "SaveLog" );
 %>
 
   <div class="row" style="width: 60%">
       <div class="card" style="padding: 20px; width: 60% ; text-align: center; margin: 0 auto !important;">
-        <h2 style=" margin: 10px 0">Register</h2>
+        <h2 style=" margin: 10px 0">Register<%=SaveLog%></h2>
         <% if( regError != null ) { %><h3 class="card-title text-center reg-error"><%=regError%></h3><% } %>
         <% if( regOk != null ) { %><h3 class="card-title text-center reg-ok"><%=regOk%></h3><% } %>
         <div class="card-body">
-          <form method="post" action="" enctype="multipart/form-data">
+          <form method="POST" action="" enctype="multipart/form-data">
             <div class="form-group" style="width: 80%; margin-left: auto; margin-right: auto ">
               <!-- Login -->
               <div class="row">
                 <div class="input-field">
-                  <input name="Login" id="log" type="text" class="validate" >
+                  <input name="Login" id="log" type="text" class="validate"
+                  <%if(SaveLog != null){%>
+                          value="<%=SaveLog%>"
+                  <%}%>
+                  >
                   <label for="log">Login</label>
                 </div>
               </div>
               <!-- Name Surname -->
               <div class="row">
                 <div class="input-field">
-                  <input name="Name" id="nam" type="text" class="validate" >
-                  <label for="nam">Password</label>
+                  <input name="Name" id="nam" type="text" class="validate"
+                    <%if(SaveName != null){%>
+                         value="<%=SaveName%>"
+                    <%}%>>
+                  <label for="nam">Name</label>
                 </div>
               </div>
               <!-- Password -->

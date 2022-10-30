@@ -16,7 +16,8 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.UUID;
 
-//@WebServlet( "/registration" )
+@WebServlet( "/register/" )   // servlet-api
+@MultipartConfig              // прием multipart - данных
 @Singleton
 public class RegistrationServlet extends HttpServlet {
     @Inject private UserDAO userDAO ;
@@ -56,7 +57,7 @@ public class RegistrationServlet extends HttpServlet {
         String errorMessage = null ;
         try {
             if( userLogin == null || userLogin.isEmpty() ) {
-                System.out.println(req.getParameter( "userLogin" ));
+                System.out.println(req.getParameter( "Login" ));
                 throw new Exception( "Login could not be empty" ) ;
             }
             if( ! userLogin.equals( userLogin.trim() ) ) {
@@ -120,6 +121,8 @@ public class RegistrationServlet extends HttpServlet {
         }
         // Проверяем успешность валидации
         if( errorMessage != null ) {  // Есть ошибки
+            session.setAttribute( "SaveLog", req.getParameter( "Login" ) ) ;
+            session.setAttribute( "SaveName", req.getParameter( "Name" ) ) ;
             session.setAttribute( "regError", errorMessage ) ;
         }
         else {  // Успешно - нет ошибок

@@ -36,7 +36,7 @@
                 <%--Если пользователь авторизован выключаем регистрацию--%>
                 <%if (authUser == null){%>
                 <li>
-                    <a href="<%=home%>/register">
+                    <a href="<%=home%>/register/">
                         Registration
                     </a>
                 </li>
