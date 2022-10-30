@@ -4,7 +4,6 @@
   String home = request.getContextPath() ;
 %>
   <div class="row"  style=" width:50%; margin: 0 auto">
-    <div>
       <div class="card-panel">
         <div style="text-align: center">
           <h3>Кабинет пользователя</h3>
@@ -52,8 +51,6 @@
             <a href="?logout=true" class="btn btn-primary">Log out</a>
           </div>
         </div>
-      </div>
-    </div>
   </div>
 
 
@@ -103,7 +100,7 @@
     if( e.target.savedText !== e.target.innerText ) {
       if( confirm( "Сохранить изменения?" ) ) {
         const fieldName = e.target.getAttribute( "data-field-name" ) ;
-        const url = "/WebBasics/register/?" + fieldName + "=" + e.target.innerText ;
+        const url = "/Java_WebBasics_war_exploded/register/?" + fieldName + "=" + e.target.innerText ;
         // console.log( url ) ; return ;
         fetch( url, {
           method: "PUT",
