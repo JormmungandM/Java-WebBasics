@@ -2,6 +2,7 @@ package step.learning.dao;
 
 import step.learning.entities.User;
 import step.learning.services.DataService;
+import step.learning.services.EmailService;
 import step.learning.services.hash.HashService;
 
 import javax.inject.Inject;
@@ -12,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 
@@ -21,13 +23,16 @@ public class UserDAO {
     private final HashService hashService;
     private final DataService dataService;
 
+    private final EmailService emailService;
+
     @Inject
-    public UserDAO(  DataService dataService,HashService hashService ) {
+    public UserDAO(  DataService dataService,HashService hashService, EmailService emailService ) {
 
         this.dataService = dataService ;
-        this.connection = dataService.getConnection() ;
-
         this.hashService = hashService;
+        this.emailService = emailService;
+
+        this.connection = dataService.getConnection() ;
     }
 
     /**
@@ -43,6 +48,13 @@ public class UserDAO {
         if( user.getName() != null ) data.put( "name", user.getName() ) ;
         if( user.getLogin() != null ) data.put( "login", user.getLogin() ) ;
         if( user.getAvatar() != null ) data.put( "avatar", user.getAvatar() ) ;
+
+        if( user.getEmail() != null ){
+            user.setEmailCode(UUID.randomUUID().toString().substring(0,6));
+            data.put( "email", user.getEmail());
+            data.put( "email_code", user.getEmailCode());
+        }
+
         String sql = "UPDATE users u SET " ;
         boolean needComma = false ;
         for( String fieldName : data.keySet() ) {
@@ -65,6 +77,16 @@ public class UserDAO {
         catch( SQLException ex ) {
             System.out.println( "UserDAO::updateUser" + ex.getMessage() ) ;
             return false ;
+        }
+
+        if(user.getEmailCode() != null){
+            String text = String.format(
+                    "Hello, %s! Your code is <b>%s</b>",
+                    user.getName(),
+                    user.getEmailCode()
+            );
+
+            emailService.send(user.getEmail(), "Email confirmation", text);
         }
         return true ;
     }
@@ -175,7 +197,6 @@ public class UserDAO {
         return null;
     }
 
-
     public User getUserByCredentialsOld(String login, String password) {
         String sql = "SELECT u.* FROM users u WHERE u.login=? AND u.pass=?";
 
@@ -193,3 +214,4 @@ public class UserDAO {
         return null;
     }
 }
+

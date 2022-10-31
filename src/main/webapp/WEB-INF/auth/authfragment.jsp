@@ -25,7 +25,7 @@
                     <!-- Password -->
                     <div class="row">
                         <div class="input-field">
-                            <input name="Password" id="pass1" type="text" class="validate" >
+                            <input name="Password" id="pass1" type="password" class="validate" >
                             <label for="pass1">Password</label>
                         </div>
                     </div>

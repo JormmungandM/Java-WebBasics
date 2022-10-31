@@ -155,6 +155,8 @@ public class RegistrationServlet extends HttpServlet {
         }
         changes.setId( authUser.getId() ) ;
         changes.setName( req.getParameter( "name" ) ) ;
+        changes.setEmail( req.getParameter( "email" ) ); ;
+
         reply =
                 userDAO.updateUser( changes )
                         ? "OK"

@@ -1,7 +1,9 @@
 package step.learning.servlets;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import step.learning.services.DataService;
+import step.learning.services.EmailService;
 import step.learning.services.hash.MD5HashService;
 import step.learning.services.hash.Sha1HashService;
 
@@ -23,6 +25,10 @@ import java.util.Objects;
 @Singleton
 public class HomeServlet extends HttpServlet
 {
+
+    @Inject
+    private EmailService emailService;
+
     MD5HashService MD5 = new MD5HashService();
     Sha1HashService Sha1 = new Sha1HashService();
     @Override
@@ -36,7 +42,8 @@ public class HomeServlet extends HttpServlet
 
     @Override
     protected void doGet(HttpServletRequest req,HttpServletResponse resp ) throws ServletException, IOException {
-
+        
+        //region DataCount
         DataService dataService = (DataService)req.getAttribute("DataService");
         String dbElement;
 
@@ -53,7 +60,6 @@ public class HomeServlet extends HttpServlet
         catch(SQLException ex) {
             dbElement = "Error " + ex.getMessage();
         }
-
 
         List<String> elements = new ArrayList<>();
         try (Statement stat = dataService.getConnection().createStatement();
@@ -74,6 +80,8 @@ public class HomeServlet extends HttpServlet
 
         req.setAttribute("count", dbElement);
         req.setAttribute("elements", elements.toArray(new String[0]));
+        //endregion
+
         req.getRequestDispatcher("WEB-INF/index.jsp").forward(req,resp);
     }
 

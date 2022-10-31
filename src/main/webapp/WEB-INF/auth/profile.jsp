@@ -26,6 +26,9 @@
             <h5 class="profile-name">
               <span>Логин: </span> <b data-field-name="login"><%= authUser.getLogin() %></b>
             </h5>
+            <h5 class="profile-name">
+              <span>E-mail: </span> <b data-field-name="email"><%= authUser.getEmail()%></b>
+            </h5>
             <p class="profile-fieldset-avatar">
             <form action="#">
               <div class="file-field input-field">
@@ -42,13 +45,11 @@
           </div>
         </div>
         <div class="row">
-          <div class="col s6">
+          <div class="col s12">
             <%--Вернуться на главную--%>
             <a href="<%=home%>" type="submit" class="btn btn-primary" >Back</a>
-          </div>
-          <div class="col s6" >
             <%--Выйти из аккаунта--%>
-            <a href="?logout=true" class="btn btn-primary">Log out</a>
+            <a href="?logout=true" class="btn btn-primary" style="float: right;">Log out</a>
           </div>
         </div>
   </div>

@@ -10,6 +10,8 @@ public class User {
     private String name;
     private String salt;
     private String avatar;
+    private String email;
+    private String emailCode;
 
     public User() {
 
@@ -21,6 +23,24 @@ public class User {
         name   = res.getString( "name"  ) ;
         salt   = res.getString( "salt"  ) ;
         avatar = res.getString( "avatar"  ) ;
+        email = res.getString( "email"  ) ;
+        emailCode = res.getString( "email_code"  ) ;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEmailCode() {
+        return emailCode;
+    }
+
+    public void setEmailCode(String emailCode) {
+        this.emailCode = emailCode;
     }
 
     public String getAvatar() {
