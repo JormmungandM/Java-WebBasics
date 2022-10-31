@@ -5,11 +5,12 @@
   String regOk = (String) request.getAttribute( "regOk" ) ;
   String SaveName = (String) request.getAttribute( "SaveName" );
   String SaveLog = (String)  request.getAttribute( "SaveLog" );
+  String SaveEmail = (String)  request.getAttribute( "SaveEmail" );
 %>
 
   <div class="row" style="width: 60%">
       <div class="card" style="padding: 20px; width: 60% ; text-align: center; margin: 0 auto !important;">
-        <h2 style=" margin: 10px 0">Register<%=SaveLog%></h2>
+        <h2 style=" margin: 10px 0">Register</h2>
         <% if( regError != null ) { %><h3 class="card-title text-center reg-error"><%=regError%></h3><% } %>
         <% if( regOk != null ) { %><h3 class="card-title text-center reg-ok"><%=regOk%></h3><% } %>
         <div class="card-body">
@@ -36,6 +37,16 @@
                   <label for="nam">Name</label>
                 </div>
               </div>
+              <!-- Email -->
+              <div class="row">
+                <div class="input-field">
+                  <input name="Email" id="email" type="text" class="validate"
+                    <%if(SaveEmail != null){%>
+                         value="<%=SaveEmail%>"
+                    <%}%>>
+                  <label for="email">Email</label>
+                </div>
+              </div>
               <!-- Password -->
               <div class="row">
                 <div class="input-field">
@@ -55,10 +66,12 @@
               <div class="file-field input-field">
                 <div class="btn">
                   <span>File</span>
-                  <input type="file">
+                  <input name="Avatar" type="file">
                 </div>
                 <div class="file-path-wrapper">
-                  <input name="Avatar" class="file-path validate"   type="text">
+                  <label>
+                    <input class="file-path validate"  type="text">
+                  </label>
                 </div>
               </div>
             </div>

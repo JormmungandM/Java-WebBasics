@@ -42,7 +42,7 @@ public class HomeServlet extends HttpServlet
 
     @Override
     protected void doGet(HttpServletRequest req,HttpServletResponse resp ) throws ServletException, IOException {
-        
+
         //region DataCount
         DataService dataService = (DataService)req.getAttribute("DataService");
         String dbElement;

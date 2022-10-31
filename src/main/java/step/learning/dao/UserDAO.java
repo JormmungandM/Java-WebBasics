@@ -112,6 +112,19 @@ public class UserDAO {
      * @return `id` of new record or null if fails
      */
     public String add( User user ) {
+
+        // перед добавлением отпавляем код
+        if( user.getEmail() != null ){
+            user.setEmailCode( UUID.randomUUID().toString().substring(0,6) ); // случайный код
+            String text = String.format( // тело сообщения
+                    "Hello, %s! Your code is <b>%s</b>",
+                    user.getName(),
+                    user.getEmailCode()
+            );
+            emailService.send(user.getEmail(), "Email confirmation", text); // отправка сообщения
+        }
+
+
         // генерируем id для новой записи
         String id = UUID.randomUUID().toString() ;
         // генерируем соль
@@ -119,7 +132,7 @@ public class UserDAO {
         // генерируем хеш пароля
         String passHash = this.hashPassword( user.getPass(), salt ) ;
         // готовим запрос (подстановка введенных данных!!)
-        String sql = "INSERT INTO Users(`id`,`login`,`pass`,`name`,`salt`,`avatar`) VALUES(?,?,?,?,?,?)" ;
+        String sql = "INSERT INTO users(`id`,`login`,`pass`,`name`,`salt`,`avatar`,`email`,`email_code`) VALUES(?,?,?,?,?,?,?,?)" ;
         try( PreparedStatement prep = connection.prepareStatement( sql ) ) {
             prep.setString( 1, id ) ;
             prep.setString( 2, user.getLogin() ) ;
@@ -127,10 +140,12 @@ public class UserDAO {
             prep.setString( 4, user.getName() ) ;
             prep.setString( 5, salt ) ;
             prep.setString( 6, user.getAvatar() ) ;
+            prep.setString( 7, user.getEmail() ) ;
+            prep.setString( 8, user.getEmailCode() ) ;
             prep.executeUpdate() ;
         }
         catch( SQLException ex ) {
-            System.out.println( ex.getMessage() ) ;
+            System.out.println( ex.getMessage() + " " + sql ) ;
             return null ;
         }
         return id ;

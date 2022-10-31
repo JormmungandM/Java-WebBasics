@@ -51,13 +51,14 @@ public class RegistrationServlet extends HttpServlet {
         String userPassword = req.getParameter( "Password" ) ;
         String confirmPassword = req.getParameter( "confirmPassword" ) ;
         String userName = req.getParameter( "Name" ) ;
+        String userEmail = req.getParameter( "Email" ) ;
         Part userAvatar = req.getPart( "Avatar" ) ;  // часть, отвечающая за файл (имя - как у input)
 
         // Валидация данных
         String errorMessage = null ;
         try {
+            // Login
             if( userLogin == null || userLogin.isEmpty() ) {
-                System.out.println(req.getParameter( "Login" ));
                 throw new Exception( "Login could not be empty" ) ;
             }
             if( ! userLogin.equals( userLogin.trim() ) ) {
@@ -66,12 +67,24 @@ public class RegistrationServlet extends HttpServlet {
             if( userDAO.isLoginUsed( userLogin ) ) {
                 throw new Exception( "Login is already in use" ) ;
             }
+
+            // Email можно использовать один и тот же email
+            if( userEmail == null || userEmail.isEmpty() ) {
+                throw new Exception( "Email could not be empty" ) ;
+            }
+            if( ! userEmail.equals( userEmail.trim() ) ) {
+                throw new Exception( "Email could not contain trailing spaces" ) ;
+            }
+
+            // Password
             if( userPassword == null || userPassword.isEmpty() ) {
                 throw new Exception( "Password could not be empty" ) ;
             }
             if( ! userPassword.equals( confirmPassword ) ) {
                 throw new Exception( "Passwords mismatch" ) ;
             }
+
+            // Name
             if( userName == null || userName.isEmpty() ) {
                 throw new Exception( "Name could not be empty" ) ;
             }
@@ -112,6 +125,7 @@ public class RegistrationServlet extends HttpServlet {
             user.setLogin( userLogin ) ;
             user.setPass( userPassword ) ;
             user.setAvatar( savedName ) ;
+            user.setEmail( userEmail ); ;
             if( userDAO.add( user ) == null ) {
                 throw new Exception( "Server error, try later" ) ;
             }
@@ -121,8 +135,11 @@ public class RegistrationServlet extends HttpServlet {
         }
         // Проверяем успешность валидации
         if( errorMessage != null ) {  // Есть ошибки
-            session.setAttribute( "SaveLog", req.getParameter( "Login" ) ) ;
-            session.setAttribute( "SaveName", req.getParameter( "Name" ) ) ;
+            // Возвращаем данные если он не прошли валидацию
+            session.setAttribute( "SaveLog", req.getParameter( "Login" ) ) ;    // Логин
+            session.setAttribute( "SaveName", req.getParameter( "Name" ) ) ;    // Имя
+            session.setAttribute( "SaveEmail", req.getParameter( "Email" ) ) ;  // Почта
+
             session.setAttribute( "regError", errorMessage ) ;
         }
         else {  // Успешно - нет ошибок
