@@ -36,6 +36,25 @@ public class UserDAO {
     }
 
     /**
+     * Updates data for given user: set email to confirm
+     * @param user with Id set
+     * @return success status
+     */
+    public boolean confirmEmail (User user){
+        if(user.getId() == null ) return false;
+        String sql = "UPDATE users SET email_code = NULL WHERE id = ?";
+        try( PreparedStatement prep = dataService.getConnection().prepareStatement( sql ) ) {
+            prep.setString(1, user.getId());
+            prep.executeUpdate() ;
+        }
+        catch( SQLException ex ) {
+            System.out.println( "UserDAO::confirmEmail" + ex.getMessage() + "\nsql: " + sql) ;
+            return false ;
+        }
+        return true;
+    }
+
+    /**
      * Updates data for user given. Only non-null fields are considered
      * @param user entity 'User' with non-null 'id'
      * @return true if success
@@ -113,17 +132,6 @@ public class UserDAO {
      */
     public String add( User user ) {
 
-        // перед добавлением отпавляем код
-        if( user.getEmail() != null ){
-            user.setEmailCode( UUID.randomUUID().toString().substring(0,6) ); // случайный код
-            String text = String.format( // тело сообщения
-                    "Hello, %s! Your code is <b>%s</b>",
-                    user.getName(),
-                    user.getEmailCode()
-            );
-            emailService.send(user.getEmail(), "Email confirmation", text); // отправка сообщения
-        }
-
 
         // генерируем id для новой записи
         String id = UUID.randomUUID().toString() ;
@@ -148,6 +156,21 @@ public class UserDAO {
             System.out.println( ex.getMessage() + " " + sql ) ;
             return null ;
         }
+
+        // полсе добавлением отпавляем код
+        if( user.getEmail() != null ){
+            user.setEmailCode( UUID.randomUUID().toString().substring(0,6) ); // случайный код
+            String text = String.format(
+                    "<h2>Hello!</h2><p>Your code is <b>%s</b></p>" +
+                    "<p>Follow " +
+                    "<a href='http://localhost:8080/Java_WebBasics_war_exploded/checkmail/?userid=%s&confirm=%s'>link</a>" +
+                    " to confirm email</p>",
+                    user.getEmailCode(),
+                    user.getId(),
+                    user.getEmailCode() ) ;
+            emailService.send(user.getEmail(), "Email confirmation", text); // отправка сообщения
+        }
+
         return id ;
     }
 

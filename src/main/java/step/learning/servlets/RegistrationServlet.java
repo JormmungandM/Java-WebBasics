@@ -115,7 +115,7 @@ public class RegistrationServlet extends HttpServlet {
                 // сохраняем
                 // String path = new File( "./" ).getAbsolutePath() ;  // запрос текущей директории - C:\xampp\tomcat\bin\.
                 String path = req.getServletContext().getRealPath( "/" ) ;  // ....\target\WebBasics\
-                File file = new File( path + "../upload/" + savedName ) ;
+                File file = new File( path + "src/main/webapp/img/" + savedName ) ;
                 Files.copy( userAvatar.getInputStream(), file.toPath() ) ;
             }
             // endregion

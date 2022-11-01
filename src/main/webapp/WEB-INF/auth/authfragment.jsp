@@ -5,12 +5,10 @@
     String home = request.getContextPath() ;
 %>
 
-
-
 <div class="row" style="width: 60%">
     <div class="card" style="padding: 20px; width: 60% ; text-align: center; margin: 0 auto;">
         <h2 style=" margin: 10px 0">Authorization</h2>
-        <div class = "auth-fragment">
+        <div>
             <% if( authUser == null ) { %>
             <form method="POST" action="">
 
@@ -48,6 +46,12 @@
                      src="<%=home%>/image/<%=authUser.getAvatar()%>"
                      alt="<%=authUser.getLogin()%>" />
             </a>
+            <%-- region Если почта требует подтверждения, то выводим ссылку --%>
+                <% if( authUser.getEmailCode() != null ) { %>
+                <a href="<%=home%>/checkmail/"
+                title="Почта не подтверждена, перейти на страницу подтверждения">&#x1F4E7;</a>
+                <% } %>
+            <%-- endregion --%>
             <a href="?logout=true">Log out</a>
             <% } %>
         </div>

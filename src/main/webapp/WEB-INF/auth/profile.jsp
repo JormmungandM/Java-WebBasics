@@ -9,15 +9,19 @@
           <h3>Кабинет пользователя</h3>
         </div>
         <div class="row">
-          <div class="col s5">
-            <img class="profile-avatar"
+          <div class="col s5" style="text-align: center">
+            <div>
+            <img
                  <%if (authUser.getAvatar() != null){%>
                  src="<%=home%>/img/<%=authUser.getAvatar()%>"
                  <%}else{%>
                  src="<%=home%>/img/16480.png"
                  <%}%>
-                 alt="<%=authUser.getLogin()%>" style="width: 200px; height: 200px"/>
-            <p style="font-size: 10px">Id: <b data-field-name="id"><%= authUser.getId() %></b></p>
+                 alt="<%=authUser.getLogin()%>" style="width: 300px; height: 300px"/>
+            </div>
+            <div class="row" style="font-size: 16px">
+              Id: <b data-field-name="id"><%= authUser.getId() %></b>
+            </div>
           </div>
           <div class="col s7">
             <h5 class="profile-name">
@@ -27,8 +31,25 @@
               <span>Логин: </span> <b data-field-name="login"><%= authUser.getLogin() %></b>
             </h5>
             <h5 class="profile-name">
-              <span>E-mail: </span> <b data-field-name="email"><%= authUser.getEmail()%></b>
+              <span>E-mail: </span>
+              <b data-field-name="email" id="emailName"
+                 <% if( authUser.getEmailCode() != null ) { %>
+                    class="email-error"
+                 <%}else{ %>
+                    class="email-ok"
+                 <%}%>
+              >
+                <%= authUser.getEmail()%>
+              </b>
+              <a hidden id="emailConfirm" href="<%=home%>/checkmail/" title="Почта не подтверждена, перейти на страницу подтверждения">&#x1F4E7;</a>
             </h5>
+            <div id="inputCode" hidden>
+              <div class="input-field" style="width: 30%; margin: 20px auto">
+                <input name="confirm" id="conf" type="text" class="validate" >
+                <label for="conf"> Введите код из сообщения в электронной почте</label>
+                <button class="waves-effect waves-light btn" >Confirm</button>
+              </div>
+            </div>
             <p class="profile-fieldset-avatar">
             <form action="#">
               <div class="file-field input-field">
@@ -56,7 +77,18 @@
 
 
 <script>
+
   document.addEventListener( "DOMContentLoaded", () => {
+
+    // Показываем ссылку на подтверждение почты
+    const confEmail = document.getElementById("emailName")
+    const confBtn = document.getElementById("emailConfirm")
+    if(confEmail.className === "email-error"){
+      confBtn.hidden = false;
+    }
+
+
+
     const avatarSaveButton = document.querySelector( "#avatar-save-button" ) ;
     if( ! avatarSaveButton ) throw "'#avatar-save-button' not found" ;
     avatarSaveButton.addEventListener( 'click', avatarSaveClick ) ;
@@ -75,7 +107,7 @@
     }
     let formData = new FormData() ;
     formData.append( "userAvatar", avatarInput.files[0] ) ;
-    fetch( "/WebBasics/register/", {
+    fetch( "/Java_WebBasics_war_exploded/register/", {
       method: "PUT",
       headers: { },
       body: formData  // наличие файла в formData автоматически сформирует multipart запрос
