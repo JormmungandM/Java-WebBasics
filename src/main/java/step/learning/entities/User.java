@@ -3,7 +3,11 @@ package step.learning.entities;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+
+
 public class User {
+
+    private int emailCodeAttempts;
     private String id;
     private String login;
     private String pass;
@@ -25,6 +29,15 @@ public class User {
         avatar = res.getString( "avatar"  ) ;
         email = res.getString( "email"  ) ;
         emailCode = res.getString( "email_code"  ) ;
+        emailCodeAttempts = res.getInt( "email_code_attempts" ) ;
+    }
+
+    public int getEmailCodeAttempts() {
+        return emailCodeAttempts;
+    }
+
+    public void setEmailCodeAttempts(int emailCodeAttempts) {
+        this.emailCodeAttempts = emailCodeAttempts;
     }
 
     public String getEmail() {

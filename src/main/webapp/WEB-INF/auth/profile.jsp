@@ -33,36 +33,51 @@
             <h5 class="profile-name">
               <span>E-mail: </span>
               <b data-field-name="email" id="emailName"
-                 <% if( authUser.getEmailCode() != null ) { %>
-                    class="email-error"
+                 <% if( authUser.getEmailCodeAttempts() > 3 ) { %>
+                   class="email-banned" <%-- crimson --%>
+                 <%}else if( authUser.getEmailCode() != null ){ %>
+                    class="email-check" <%-- DarkOrange --%>
                  <%}else{ %>
-                    class="email-ok"
+                    class="email-ok"    <%-- forestgreen --%>
                  <%}%>
               >
                 <%= authUser.getEmail()%>
               </b>
+              <p hidden id="emailBanned" >Ваша почта забаннена!</p>
+
               <a hidden id="emailConfirm" href="<%=home%>/checkmail/" title="Почта не подтверждена, перейти на страницу подтверждения">&#x1F4E7;</a>
+
             </h5>
-            <div id="inputCode" hidden>
-              <div class="input-field" style="width: 30%; margin: 20px auto">
-                <input name="confirm" id="conf" type="text" class="validate" >
-                <label for="conf"> Введите код из сообщения в электронной почте</label>
-                <button class="waves-effect waves-light btn" >Confirm</button>
-              </div>
-            </div>
             <p class="profile-fieldset-avatar">
-            <form action="#">
               <div class="file-field input-field">
                 <div class="waves-effect waves-light btn">
                   <span>Картинка:</span>
                   <input type="file" id="avatar-input" alt="avatar-input" />
                 </div>
                 <div class="file-path-wrapper">
+                  <label for="avatar-save-button"></label>
                   <input class="file-path validate" id="avatar-save-button" alt="avatar-input" type="text" placeholder="Upload files">
                 </div>
               </div>
-            </form>
             </p>
+            <div class="profile-pass" style="width: 80%; margin: 0 auto">
+              <!-- Password -->
+              <div class="row">
+                <div class="input-field">
+                  <input name="Password" id="pass1" type="password" class="validate" >
+                  <label for="pass1">Password</label>
+                </div>
+              </div>
+              <!-- RepeatPassword -->
+              <div class="row">
+                <div class="input-field">
+                  <input name="confirmPassword" id="pass2" type="password" class="validate" >
+                  <label for="pass2">Repeat password</label>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary" id="change-pass-button" >Change</button>
+            </div>
+
           </div>
         </div>
         <div class="row">
@@ -81,23 +96,54 @@
   document.addEventListener( "DOMContentLoaded", () => {
 
     // Показываем ссылку на подтверждение почты
-    const confEmail = document.getElementById("emailName")
-    const confBtn = document.getElementById("emailConfirm")
-    if(confEmail.className === "email-error"){
-      confBtn.hidden = false;
+    const nameEmail = document.getElementById("emailName")
+    if(nameEmail.className === "email-banned"){
+      document.getElementById("emailBanned").hidden = false;
     }
-
-
+    else if(nameEmail.className === "email-check"){
+      document.getElementById("emailConfirm").hidden = false;
+    }
+    const changePassButton = document.querySelector( "#change-pass-button" ) ;
+    if( ! changePassButton ) throw "'#change-pass-button' not found" ;
+    changePassButton.addEventListener( 'click', changePassClick )
 
     const avatarSaveButton = document.querySelector( "#avatar-save-button" ) ;
     if( ! avatarSaveButton ) throw "'#avatar-save-button' not found" ;
     avatarSaveButton.addEventListener( 'click', avatarSaveClick ) ;
+
+
     for( let nameElement of document.querySelectorAll( ".profile-name b" ) ){
       nameElement.addEventListener( "click", nameClick ) ;
       nameElement.addEventListener( "blur", nameBlur ) ;
       nameElement.addEventListener( "keydown", nameKeydown ) ;
     }
   });
+
+  function changePassClick(e) {
+    let passwords = e.target.parentNode.querySelectorAll('input[type="password"]') ;
+    if( passwords[0].value !== passwords[1].value ) {
+      alert( "Пароли не совпадают" ) ;
+      passwords[0].value = passwords[1].value = '' ;
+      return ;
+    }
+    if( passwords[0].value.length < 3 ) {
+      alert( "Пароль слишком короткий" ) ;
+      passwords[0].value = passwords[1].value = '' ;
+      return ;
+    }
+    // console.log( passwords[0].value ) ;
+    fetch( "/Java_WebBasics_war_exploded/register/?password=" + passwords[0].value, {
+      method: "PUT",
+      headers: { },
+      body: ""
+    }).then( r => r.text() )
+            .then( t => {
+
+              alert(t + " (password)"); // сообщени об успешном (или неуспешном) обновлении
+              passwords[0].value = passwords[1].value = '' ;
+     } ) ;
+  }
+
   function avatarSaveClick() {
     const avatarInput = document.querySelector( "#avatar-input" ) ;
     if( ! avatarInput ) throw "'#avatar-input' not found" ;
@@ -112,9 +158,9 @@
       headers: { },
       body: formData  // наличие файла в formData автоматически сформирует multipart запрос
     }).then( r => r.text() )
-            .then( t => {
-              console.log(t);
-            } ) ;
+      .then( t => {
+          alert(t);
+       } ) ;
   }
   function nameKeydown(e) {
     if( e.keyCode === 13 ) {
@@ -158,4 +204,6 @@
       }
     }
   }
+
+
 </script>

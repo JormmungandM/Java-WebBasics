@@ -7,10 +7,7 @@ import step.learning.services.hash.HashService;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -54,6 +51,22 @@ public class UserDAO {
         return true;
     }
 
+    public boolean incEmailCodeAttempts( User user ) {
+        if( user == null || user.getId() == null ) return false ;
+        String sql = "UPDATE users u SET u.`email_code_attempts` = u.`email_code_attempts` + 1 WHERE u.`id` = ?" ;
+        try( PreparedStatement statement = dataService.getConnection().prepareStatement( sql ) ) {
+            statement.setString( 1, user.getId() ) ;
+            statement.executeUpdate() ;
+        }
+        catch( SQLException ex ) {
+            System.out.println( "UserDAO::incEmailCodeAttempts " + ex.getMessage() ) ;
+            System.out.println( sql ) ;
+            return false ;
+        }
+        user.setEmailCodeAttempts( user.getEmailCodeAttempts() + 1 ) ;
+        return true ;
+    }
+
     /**
      * Updates data for user given. Only non-null fields are considered
      * @param user entity 'User' with non-null 'id'
@@ -64,6 +77,8 @@ public class UserDAO {
 
         // Задание: сформировать запрос, учитывая только те данные, которые не null (в user)
         Map<String, String> data = new HashMap<>() ;
+        Map<String, Integer> dataNumeric = new HashMap<>();
+
         if( user.getName() != null ) data.put( "name", user.getName() ) ;
         if( user.getLogin() != null ) data.put( "login", user.getLogin() ) ;
         if( user.getAvatar() != null ) data.put( "avatar", user.getAvatar() ) ;
@@ -72,7 +87,19 @@ public class UserDAO {
             user.setEmailCode(UUID.randomUUID().toString().substring(0,6));
             data.put( "email", user.getEmail());
             data.put( "email_code", user.getEmailCode());
+
+            dataNumeric.put("email_code_attempts",0);
         }
+
+        if(user.getPass() != null){
+            // генерируем соль
+            String salt = hashService.hash( UUID.randomUUID().toString() ) ;
+            // генерируем хеш пароля
+            String passHash = this.hashPassword( user.getPass(), salt ) ;
+            data.put( "pass", passHash ) ;
+            data.put( "salt", salt ) ;
+        }
+
 
         String sql = "UPDATE users u SET " ;
         boolean needComma = false ;
@@ -80,6 +107,13 @@ public class UserDAO {
             sql += String.format( "%c u.`%s` = ?", ( needComma ? ',' : ' ' ), fieldName ) ;
             needComma = true ;
         }
+
+        for( String fieldName : dataNumeric.keySet() ) {   // числовые поля не несут опасности, поэтому
+            sql += String.format( "%c u.`%s` = %d",        // подставляем их значения в сам запрос
+                    ( needComma ? ',' : ' ' ), fieldName, dataNumeric.get( fieldName ) ) ;
+            needComma = true ;
+        }
+
         sql += " WHERE u.`id` = ? " ;
         if( ! needComma ) {  // не было ни одного параметра
             return false ;

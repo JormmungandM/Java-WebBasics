@@ -17,6 +17,7 @@ public class CheckMailServlet extends HttpServlet {
     @Inject
     private UserDAO userDAO;
 
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -25,23 +26,25 @@ public class CheckMailServlet extends HttpServlet {
 
         if( confirm != null ) {     // есть сообщение на подтверджение
             try {
-                User user = userId == null
-                        ? (User) req.getAttribute( "AuthUser" )
-                        : userDAO.getUserById( userId ) ;
+                User user = userId == null ? (User) req.getAttribute( "AuthUser" ) : userDAO.getUserById( userId ) ;
 
                 if ( user == null )
-                    throw new Exception("Invalid user id");
+                    throw new Exception( "Invalid user id" );
+                req.setAttribute( "AuthUser", user ) ;
 
                 if ( user.getEmailCode() == null ) // почта подтверждена, вероятно обновление страницы с параметрами
-                    throw new Exception("Email already confirmed");
+                    throw new Exception( "Email already confirmed" );
 
-                if ( !confirm.equals( user.getEmailCode() ) ) // код не подтвержден
-                    throw new Exception("Invalid code");
-
+                if ( !confirm.equals( user.getEmailCode() ) ) {// код не подтвержден
+                    // увеличиваем счетчик попыток
+                    userDAO.incEmailCodeAttempts( user );
+                    throw new Exception( "Invalid " + user.getEmailCodeAttempts() + " attempts code" );
+                }
                 if ( !userDAO.confirmEmail(user) )
-                    throw new Exception("DB error");
+                    throw new Exception( "DB error" );
 
-                req.setAttribute("confirm", "OK");  // код подтвержден
+
+                req.setAttribute("confirm", "OK" );  // код подтвержден
             }
             catch (Exception ex) {
                 req.setAttribute("confirmError", ex.getMessage());

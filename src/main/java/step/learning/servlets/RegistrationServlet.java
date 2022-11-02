@@ -115,7 +115,7 @@ public class RegistrationServlet extends HttpServlet {
                 // сохраняем
                 // String path = new File( "./" ).getAbsolutePath() ;  // запрос текущей директории - C:\xampp\tomcat\bin\.
                 String path = req.getServletContext().getRealPath( "/" ) ;  // ....\target\WebBasics\
-                File file = new File( path + "src/main/webapp/img/" + savedName ) ;
+                File file = new File(path + "../upload/" + savedName); ;
                 Files.copy( userAvatar.getInputStream(), file.toPath() ) ;
             }
             // endregion
@@ -151,16 +151,41 @@ public class RegistrationServlet extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User changes = new User() ;
+
         User authUser = (User) req.getAttribute( "AuthUser" ) ;
+
+
         Part userAvatar = null ;
         try {
             userAvatar = req.getPart( "userAvatar" ) ;
         } catch( Exception ignored ) { }
 
-        if( userAvatar != null ) {
-            resp.getWriter().print( "File '" + userAvatar.getSubmittedFileName() + "' in use" ) ;
-            return ;
+        String savedName = null;
+        if (userAvatar != null) {
+            long size = userAvatar.getSize();
+            if (size > 0) {
+                String userFilename = userAvatar.getSubmittedFileName();
+                int dotPosition = userFilename.lastIndexOf(".");
+                if(dotPosition == -1) {
+                    resp.getWriter().print("File extension needed");
+                }
+
+                String extension = userFilename.substring(dotPosition);
+                if(!mimeService.isImage(extension)) {
+                    resp.getWriter().print("Invalid file extension");
+                }
+
+                savedName = UUID.randomUUID() + extension;
+
+                String path = req.getServletContext().getRealPath("/");
+
+                File file = new File(path + "../upload/" + savedName);
+
+                Files.copy(userAvatar.getInputStream(), file.toPath());
+            }
         }
+
+
         String reply ;
         String login = req.getParameter( "login" ) ;
         if( login != null ) {
@@ -170,13 +195,15 @@ public class RegistrationServlet extends HttpServlet {
             }
             changes.setLogin( login ) ;
         }
+
         changes.setId( authUser.getId() ) ;
         changes.setName( req.getParameter( "name" ) ) ;
         changes.setEmail( req.getParameter( "email" ) ); ;
+        changes.setPass(req.getParameter("password"));
 
         reply =
                 userDAO.updateUser( changes )
-                        ? "OK"
+                        ? "Update successful"
                         : "Update error" ;
         resp.getWriter().print( reply ) ;
     }

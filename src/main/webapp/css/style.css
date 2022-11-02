@@ -6,8 +6,11 @@
     color: forestgreen; !important;
 }
 
-.email-error {
+.email-banned {
     color: crimson; !important;
+}
+.email-check {
+    color: DarkOrange; !important;
 }
 .email-ok {
     color: forestgreen; !important;
