@@ -13,9 +13,9 @@
             <div>
             <img
                  <%if (authUser.getAvatar() != null){%>
-                 src="<%=home%>/img/<%=authUser.getAvatar()%>"
+                 src="<%=home%>/image/<%=authUser.getAvatar()%>"
                  <%}else{%>
-                 src="<%=home%>/img/16480.png"
+                 src="<%=home%>/image/16480.png"
                  <%}%>
                  alt="<%=authUser.getLogin()%>" style="width: 300px; height: 300px"/>
             </div>

@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.UUID;
@@ -37,9 +38,10 @@ public class RegistrationServlet extends HttpServlet {
             session.removeAttribute( "regOk" ) ;  // удаляем сообщение из сессии
         }
 
-
+        System.out.println(req.getContextPath());
         req.setAttribute( "pageBody", "auth/registration.jsp" ) ;
         req.getRequestDispatcher( "/WEB-INF/_layout.jsp" ).forward( req, resp ) ;
+
     }
 
     @Override
@@ -114,9 +116,12 @@ public class RegistrationServlet extends HttpServlet {
                 savedName = UUID.randomUUID() + extension ;
                 // сохраняем
                 // String path = new File( "./" ).getAbsolutePath() ;  // запрос текущей директории - C:\xampp\tomcat\bin\.
-                String path = req.getServletContext().getRealPath( "/" ) ;  // ....\target\WebBasics\
-                File file = new File(path + "../upload/" + savedName); ;
+                String path = req.getServletContext().getRealPath("/");
+                //String path = "C:\\Users\\JormmungandPC\\IdeaProjects\\Java-WebBasics\\src\\main\\webapp\\img\\";
+                File file = new File(path + "img\\" + savedName);
                 Files.copy( userAvatar.getInputStream(), file.toPath() ) ;
+                System.out.println(userAvatar.getInputStream());
+                System.out.println(file.toPath());
             }
             // endregion
 
@@ -176,12 +181,15 @@ public class RegistrationServlet extends HttpServlet {
                 }
 
                 savedName = UUID.randomUUID() + extension;
-
                 String path = req.getServletContext().getRealPath("/");
+                File file = new File(path + "img\\" + savedName);
+                Files.copy( userAvatar.getInputStream(), file.toPath() ) ;
 
-                File file = new File(path + "../upload/" + savedName);
-
-                Files.copy(userAvatar.getInputStream(), file.toPath());
+                // Удаление старой картинки
+                File oldFile = new File(path + "img\\" + authUser.getAvatar());
+                if(oldFile.delete()) {
+                    System.out.println("Old avatar has been deleted");
+                }
             }
         }
 
@@ -199,7 +207,8 @@ public class RegistrationServlet extends HttpServlet {
         changes.setId( authUser.getId() ) ;
         changes.setName( req.getParameter( "name" ) ) ;
         changes.setEmail( req.getParameter( "email" ) ); ;
-        changes.setPass(req.getParameter("password"));
+        changes.setPass( req.getParameter("password") );
+        changes.setAvatar( savedName );
 
         reply =
                 userDAO.updateUser( changes )

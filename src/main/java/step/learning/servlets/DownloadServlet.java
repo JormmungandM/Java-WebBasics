@@ -35,7 +35,7 @@ public class DownloadServlet extends HttpServlet {
         }
         // Проверяем существует ли файл
         String path = req.getServletContext().getRealPath( "/" ) ;  // ....\target\WebBasics\
-        File file = new File( path + "../upload" + requestedFilename ) ;
+        File file = new File( path + "img\\" + requestedFilename ) ;
         if( file.isFile() ) {
             resp.setContentType( mimeType ) ;
             resp.setContentLengthLong( file.length() ) ;

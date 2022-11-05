@@ -195,14 +195,14 @@ public class UserDAO {
         if( user.getEmail() != null ){
             user.setEmailCode( UUID.randomUUID().toString().substring(0,6) ); // случайный код
             String text = String.format(
-                    "<h2>Hello!</h2><p>Your code is <b>%s</b></p>" +
+                   "<h2>Hello!</h2><p>Your code is <b>%s</b></p>" +
                     "<p>Follow " +
                     "<a href='http://localhost:8080/Java_WebBasics_war_exploded/checkmail/?userid=%s&confirm=%s'>link</a>" +
                     " to confirm email</p>",
                     user.getEmailCode(),
                     user.getId(),
                     user.getEmailCode() ) ;
-            emailService.send(user.getEmail(), "Email confirmation", text); // отправка сообщения
+           emailService.send(user.getEmail(), "Email confirmation", text); // отправка сообщения
         }
 
         return id ;
