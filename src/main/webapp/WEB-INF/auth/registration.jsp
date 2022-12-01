@@ -8,7 +8,7 @@
   String SaveEmail = (String)  request.getAttribute( "SaveEmail" );
 %>
 
-  <div class="row" style="width: 60%">
+  <div class="row" style="width: 60%; margin-top: 4%">
       <div class="card" style="padding: 20px; width: 60% ; text-align: center; margin: 0 auto !important;">
         <h2 style=" margin: 10px 0">Register</h2>
         <% if( regError != null ) { %><h3 class="card-title text-center reg-error"><%=regError%></h3><% } %>

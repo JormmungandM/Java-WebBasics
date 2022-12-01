@@ -159,6 +159,7 @@ public class UserDAO {
         return null ;
     }
 
+
     /**
      * Inserts user in DB `Users` table
      * @param user data to insert
@@ -173,6 +174,8 @@ public class UserDAO {
         String salt = hashService.hash( UUID.randomUUID().toString() ) ;
         // генерируем хеш пароля
         String passHash = this.hashPassword( user.getPass(), salt ) ;
+        // генерируем код подтверждения почты
+        String emailCode = UUID.randomUUID().toString().substring(0,6);
         // готовим запрос (подстановка введенных данных!!)
         String sql = "INSERT INTO users(`id`,`login`,`pass`,`name`,`salt`,`avatar`,`email`,`email_code`) VALUES(?,?,?,?,?,?,?,?)" ;
         try( PreparedStatement prep = connection.prepareStatement( sql ) ) {
@@ -193,7 +196,7 @@ public class UserDAO {
 
         // полсе добавлением отпавляем код
         if( user.getEmail() != null ){
-            user.setEmailCode( UUID.randomUUID().toString().substring(0,6) ); // случайный код
+            user.setEmailCode( emailCode ); // случайный код
             String text = String.format(
                    "<h2>Hello!</h2><p>Your code is <b>%s</b></p>" +
                     "<p>Follow " +

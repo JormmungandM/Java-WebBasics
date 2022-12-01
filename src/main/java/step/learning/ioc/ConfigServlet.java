@@ -21,6 +21,7 @@ public class ConfigServlet extends ServletModule {
         serve( "/image/*" ).with( DownloadServlet.class ) ;
         serve( "/profile" ).with( ProfileServlet.class ) ;
         serve( "/checkmail/" ).with( CheckMailServlet.class ) ;
+        serve( "/user-posts/" ).with( PostsServlet.class ) ;
         serve( "/" ).with( HomeServlet.class );
 
     }

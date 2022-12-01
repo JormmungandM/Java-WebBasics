@@ -16,8 +16,6 @@ public class ProfileServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User authUser = (User) req.getAttribute( "AuthUser" ) ;
         if( authUser == null ) {
-            // resp.sendRedirect( req.getContextPath() + "/register/" ) ;
-
             req.setAttribute( "pageBody", "auth/authfragment.jsp" ) ;
         }
         else {

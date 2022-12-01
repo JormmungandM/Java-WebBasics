@@ -16,18 +16,27 @@
 
    <title>JSP</title>
 </head>
-<body>
+<body style="height: 100vh; line-height: 1;">
 
-<jsp:include page="head/headerfragment.jsp"/>
+<div style="min-height: 100%; display: flex; flex-direction: column">
+    <jsp:include page="head/headerfragment.jsp"/>
 
-<div style="margin-top: 6%">
-    <jsp:include page="<%=pageBody%>" />
+    <div style="flex:1 1 auto">
+        <jsp:include page="<%=pageBody%>" />
+    </div>
+
+    <div style="text-align: center; ">
+        <jsp:include page="footer/footer.jsp"/>
+    </div>
 </div>
 
 
-<div style="text-align: center; ">
-    <jsp:include page="footer/footer.jsp"/>
-</div>
-
+<scrip type="text/javascript" src="js/materialize.min.js"></scrip>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let elems = document.querySelectorAll('.modal');
+        let instances = M.Modal.init(elems, {opacity:0.2});
+    });
+</script>
 </body>
 </html>

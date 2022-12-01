@@ -5,7 +5,7 @@
     String home = request.getContextPath() ;
 %>
 
-<div class="row" style="width: 60%">
+<div class="row" style="width: 60%; margin-top: 6%">
     <div class="card" style="padding: 20px; width: 60% ; text-align: center; margin: 0 auto;">
         <h2 style=" margin: 10px 0">Authorization</h2>
         <div>

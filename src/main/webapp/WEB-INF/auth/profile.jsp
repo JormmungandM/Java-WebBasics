@@ -3,7 +3,7 @@
   User authUser = (User) request.getAttribute( "AuthUser" ) ;
   String home = request.getContextPath() ;
 %>
-  <div class="row"  style=" width:50%; margin: 0 auto">
+  <div class="row"  style=" width:50%; margin: 0 auto;">
       <div class="card-panel">
         <div style="text-align: center">
           <h3>Кабинет пользователя</h3>
@@ -60,25 +60,42 @@
                 </div>
               </div>
             </p>
-            <div class="profile-pass" style="width: 80%; margin: 0 auto">
-              <!-- Password -->
-              <div class="row">
-                <div class="input-field">
-                  <input name="Password" id="pass1" type="password" class="validate" >
-                  <label for="pass1">Password</label>
+
+            <!-- Modal Trigger -->
+            <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Edit password</a>
+
+            <!-- Modal Structure -->
+            <div id="modal1" class="modal">
+              <div class="modal-content">
+                <h4>Edit password</h4>
+                <div class="profile-pass" style="width: 80%; margin: 0 auto; padding: 15px 0">
+                  <!-- Password -->
+                  <div class="row">
+                    <div class="input-field">
+                      <input name="Password" id="pass1" type="password" class="validate" >
+                      <label for="pass1">Password</label>
+                    </div>
+                  </div>
+                  <!-- RepeatPassword -->
+                  <div class="row">
+                    <div class="input-field">
+                      <input name="confirmPassword" id="pass2" type="password" class="validate" >
+                      <label for="pass2">Repeat password</label>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary" id="change-pass-button" >Change</button>
                 </div>
               </div>
-              <!-- RepeatPassword -->
-              <div class="row">
-                <div class="input-field">
-                  <input name="confirmPassword" id="pass2" type="password" class="validate" >
-                  <label for="pass2">Repeat password</label>
-                </div>
+              <div class="modal-footer">
+                <a href="#!" class="modal-close waves-effect waves-red btn-flat">Close</a>
               </div>
-              <button type="submit" class="btn btn-primary" id="change-pass-button" >Change</button>
             </div>
 
           </div>
+
+
+
+
         </div>
         <div class="row">
           <div class="col s12">
@@ -92,7 +109,6 @@
 
 
 <script>
-
   document.addEventListener( "DOMContentLoaded", () => {
 
     // Показываем ссылку на подтверждение почты
