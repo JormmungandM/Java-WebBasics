@@ -16,7 +16,7 @@
 
    <title>JSP</title>
 </head>
-<body style="height: 100vh; line-height: 1;">
+<body style="height: 100vh; line-height: 1.5;">
 
 <div style="min-height: 100%; display: flex; flex-direction: column">
     <jsp:include page="head/headerfragment.jsp"/>

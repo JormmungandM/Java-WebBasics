@@ -124,7 +124,11 @@ public class PostsServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.sendRedirect( req.getRequestURI() ) ;
+        String postContent = req.getParameter("id");
+        String reply = postDAO.Delete( postContent )
+                        ? "Delete successful"
+                        : "Delete error" ;
+        resp.getWriter().print( reply ) ;
     }
 }
 

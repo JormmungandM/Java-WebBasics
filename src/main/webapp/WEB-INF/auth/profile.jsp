@@ -3,7 +3,7 @@
   User authUser = (User) request.getAttribute( "AuthUser" ) ;
   String home = request.getContextPath() ;
 %>
-  <div class="row"  style=" width:50%; margin: 0 auto;">
+  <div class="row"  style="width:50%; margin: 0 auto;">
       <div class="card-panel">
         <div style="text-align: center">
           <h3>Кабинет пользователя</h3>
@@ -105,8 +105,8 @@
             <a href="?logout=true" class="btn btn-primary" style="float: right;">Log out</a>
           </div>
         </div>
+      </div>
   </div>
-
 
 <script>
   document.addEventListener( "DOMContentLoaded", () => {

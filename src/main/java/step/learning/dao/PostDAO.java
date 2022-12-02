@@ -63,8 +63,7 @@ public class PostDAO {
         return posts;
     }
 
-    public String Add(Post post)
-    {
+    public String Add(Post post){
         String id = UUID.randomUUID().toString() ;
 
         Date dt = new Date();
@@ -89,5 +88,16 @@ public class PostDAO {
         return id ;
     }
 
-
+    public boolean Delete(String postId){
+        System.out.println(postId);
+        String sql = "DELETE FROM posts WHERE id = '"+postId+"'";
+        try(Statement stmt = dataService.getConnection().createStatement() ){
+            stmt.executeUpdate(sql);
+        }
+        catch( SQLException ex ) {
+            System.out.println( "PostDAO::DeletePostByID" + ex.getMessage() + "\n" + sql ) ;
+            return false ;
+        }
+        return true ;
+    }
 }
